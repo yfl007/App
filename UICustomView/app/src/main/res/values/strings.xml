@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">UICustomView</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="back">back</string>
+    <string name="title">This is a title</string>
+    <string name="edit">edit</string>
+</resources>

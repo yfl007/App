@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">ActivityTest</string>
+    <string name="title_activity_first">FirstActivity</string>
+    <string name="button_1">Button 1</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_second">SecondActivity</string>
+    <string name="button_2">Button 2</string>
+    <string name="title_activity_third">ThirdActivity</string>
+    <string name="button_3">Button 3</string>
+    <string name="hello_world">Hello world!</string>
+</resources>
