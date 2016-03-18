@@ -14,6 +14,8 @@ import android.widget.Button;
 
 import java.nio.charset.MalformedInputException;
 
+import static android.util.Log.d;
+
 
 public class MainActivity extends Activity {
     private static final String TAG = "Nick-MainActivity";
@@ -82,8 +84,8 @@ public class MainActivity extends Activity {
                         String author = cursor.getString(cursor.getColumnIndex("author"));
                         Double price = cursor.getDouble(cursor.getColumnIndex("price"));
                         int pages = cursor.getInt(cursor.getColumnIndex("pages"));
-                        Log.d(TAG, "MainActivity.query: id="+id +" name="+name+" author="
-                                +author+" price="+price+" pages="+pages);
+                        d(TAG, "MainActivity.query: id=" + id + " name=" + name + " author="
+                                + author + " price=" + price + " pages=" + pages);
                     }while (cursor.moveToNext());
                 }
                 cursor.close();
@@ -100,6 +102,7 @@ public class MainActivity extends Activity {
                     if (true){
                         throw new NullPointerException();
                     }
+                    d(TAG, "MainActivity.onClick.not found exception!");
                     ContentValues values = new ContentValues();
                     values.put("author","Tom");
                     values.put("price",15.0);
