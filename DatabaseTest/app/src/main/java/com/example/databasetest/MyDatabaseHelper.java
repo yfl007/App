@@ -45,7 +45,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         switch (oldVersion){
             case 1:
                 db.execSQL(CREATE_CATEGORY);
-                //break;/*Noted:±£Ö¤¿ç°æÉı¼¶Ò²ÄÜÓĞĞ§*/
+                //break;/*Noted:ä¿è¯è·¨ç‰ˆæœ¬å‡çº§æœ‰æ•ˆ*/
             case 2:
                 db.execSQL("alter table Book add column category_id integer");
             default:
