@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
-        dbHelper = new MyDatabaseHelper(this,"book.db",null,2);
+        dbHelper = new MyDatabaseHelper(this,"book.db",null,3);
         Button button = (Button)findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
