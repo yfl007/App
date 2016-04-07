@@ -13,9 +13,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 import static android.util.Log.d;
 
@@ -25,6 +27,7 @@ public class MainActivity extends Activity {
     private static final int TAKE_PICTURE = 1;
     private static final int IMAGE_CROP = 2;
     private Button takePic;
+    private Button chooseFromAlbum;
     private ImageView picture;
     private Uri imageUri;
     @Override
@@ -53,6 +56,29 @@ public class MainActivity extends Activity {
 
             }
         });
+        chooseFromAlbum = (Button)findViewById(R.id.choose_from_album);
+        chooseFromAlbum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                File outputImage = new File(Environment.getExternalStorageDirectory(),"output_image.jpg");
+                try {
+                    if (outputImage.exists()){
+                        outputImage.delete();
+                    }
+                    outputImage.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                imageUri = Uri.fromFile(outputImage);
+                Intent intent = new Intent("android.intent.action.GET_CONTENT");
+                intent.setType("image/*");
+                intent.putExtra("crop", true);
+                intent.putExtra("scale", true);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
+                d(TAG, "MainActivity.onClick.chooseFromAlbum:imagepath=="+imageUri.getPath());
+                startActivityForResult(intent,IMAGE_CROP);
+            }
+        });
     }
 
     @Override
@@ -69,14 +95,24 @@ public class MainActivity extends Activity {
                 }
                 break;
             case IMAGE_CROP:
-                Log.d(TAG, "MainActivity.onActivityResult.IMAGE_CROP:resultCode ="+ resultCode);
+                d(TAG, "MainActivity.onActivityResult.IMAGE_CROP:resultCode =" + resultCode+",data= "+data);
+                Log.d(TAG, "MainActivity.onActivityResult.imageUri==" + imageUri.getPath());
                 if (resultCode==RESULT_OK){
                     try {
-                        Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
+                        InputStream is = getContentResolver().openInputStream(imageUri);
+                        d(TAG, "MainActivity.onActivityResult.is=" + is.toString());
+                        final BitmapFactory.Options  options = new BitmapFactory.Options();
+                        BufferedInputStream buffer = new BufferedInputStream(is);
+                        options.inJustDecodeBounds = true;
+                        //options.inSampleSize = 4;
+                        buffer.mark(1024*1024);
+                        Bitmap bitmap = BitmapFactory.decodeStream(buffer,null,options);
+                        buffer.reset();
                         picture.setImageBitmap(bitmap);
-                    } catch (FileNotFoundException e) {
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
+
                 }
                 break;
             default:
