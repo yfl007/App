@@ -15,6 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import static android.util.Log.d;
+
 
 public class MainActivity extends Activity implements View.OnClickListener {
     private static final String TAG = "nick-MainActivity";
@@ -22,11 +24,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private Button stopService;
     private Button bindService;
     private Button unbindService;
+    private Button startIntentService;
     private MyService.DownloadBinder downloadBinder;
     private ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            Log.d(TAG, "onServiceConnected.");
+            d(TAG, "onServiceConnected.");
             downloadBinder = (MyService.DownloadBinder)service;
             downloadBinder.startDownload();
             downloadBinder.getProgress();
@@ -34,7 +37,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            Log.d(TAG, "onServiceDisconnected.");
+            d(TAG, "onServiceDisconnected.");
         }
     };
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +47,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
         stopService = (Button)findViewById(R.id.stop_service);
         bindService = (Button)findViewById(R.id.bind_service);
         unbindService = (Button)findViewById(R.id.unbind_service);
+        startIntentService = (Button)findViewById(R.id.start_intent_service);
         startService.setOnClickListener(this);
         stopService.setOnClickListener(this);
         bindService.setOnClickListener(this);
         unbindService.setOnClickListener(this);
+        startIntentService.setOnClickListener(this);
 
     }
 
@@ -72,6 +77,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.unbind_service:
                 unbindService(connection);
+                break;
+            case R.id.start_intent_service:
+                d(TAG, "MainActivity.onClick.star_intent_service:thread id = "+Thread.currentThread().getId());
+                Intent intent = new Intent(this,MyIntentService.class);
+                startService(intent);
                 break;
             default:
                 break;
