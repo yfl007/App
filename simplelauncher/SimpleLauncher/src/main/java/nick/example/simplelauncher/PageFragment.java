@@ -1,6 +1,7 @@
 package nick.example.simplelauncher;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -54,6 +55,7 @@ public class PageFragment extends Fragment implements LoaderManager.LoaderCallba
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 //        return super.onCreateView(inflater, container, savedInstanceState);
         mFlipView = new FlipViewController(mContext);
+//        mFlipView.setAnimationBitmapFormat(Bitmap.Config.RGB_565);
         mFlipView.setAdapter(mPageAdapter);
         return mFlipView;
     }
@@ -90,5 +92,23 @@ public class PageFragment extends Fragment implements LoaderManager.LoaderCallba
     public void onLoaderReset(Loader<ArrayList<AppModel>> loader) {
 
         mPageAdapter.addData(null);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mFlipView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mFlipView.onPause();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mFlipView = null;
     }
 }
